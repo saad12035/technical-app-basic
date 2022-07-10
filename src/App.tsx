@@ -1,16 +1,18 @@
 import React from 'react';
-import { Flex, Heading, Stack,Text } from '@chakra-ui/react';
+import {BrowserRouter, Routes, Route} from "react-router-dom";
+import CustomersData from "./pages/customerData/customerData";
+
+
 
 function App() {
-  return (
-    <Flex align={"center"} bg="gray.200" justify="center" w={"100vw"} h="100vh">
-      <Stack p="5%" bg="gray.300" rounded={"10px"}> 
-        <Heading>Hi there 🥳</Heading>
-        <br />
-        <Text textAlign={"center"}>Please get started!</Text>
-      </Stack>
-    </Flex>
-  );
+    return (
+        <BrowserRouter>
+            <Routes>
+                <Route path="/" element={<CustomersData/>}>
+                </Route>
+            </Routes>
+        </BrowserRouter>
+    );
 }
 
 export default App;

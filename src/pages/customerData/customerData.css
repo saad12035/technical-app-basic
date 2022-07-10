@@ -1,0 +1,21 @@
+.container{
+    display: flex;
+    justify-content: center;
+    align-content: center;
+    min-height: 760px;
+    background-color: aliceblue;
+    padding-top: 10%;
+}
+
+.check{
+    display: flex;
+    flex-direction: column;
+    width: 900px;
+}
+
+.check h1{
+    font-size: 25px;
+    font-weight: bold;
+    text-align: center;
+    padding-bottom: 5%;
+}

@@ -8,27 +8,27 @@ import { ApolloClient, ApolloProvider, InMemoryCache } from '@apollo/client';
 
 //Initialize Apollo Client for hasura connection
 const client = new ApolloClient({
-  uri: "hasura_graphql_URL",
+  uri: 'https://good-minnow-52.hasura.app/v1/graphql',
   cache: new InMemoryCache({ addTypename: false }),
   headers: {
     "Access-Control-Allow-Origin": "*",
     "X-Hasura-Admin-Secret":
-      "hasura_admin_secret_here",
+        "eS8hiDkclVA2QumPktVugFxL40LN5KLiHWAto4V0efzV7JbIfPdeIkPD3G3Bw14N",
   },
 });
 
 
 const root = ReactDOM.createRoot(
-  document.getElementById('root') as HTMLElement
+    document.getElementById('root') as HTMLElement
 );
 root.render(
-  <React.StrictMode>
-    <ChakraProvider>
-      <ApolloProvider client={client}>
-        <App />
-      </ApolloProvider>
-    </ChakraProvider>
-  </React.StrictMode>
+    <React.StrictMode>
+      <ChakraProvider>
+        <ApolloProvider client={client}>
+          <App/>
+        </ApolloProvider>
+      </ChakraProvider>
+    </React.StrictMode>
 );
 
 // If you want to start measuring performance in your app, pass a function
