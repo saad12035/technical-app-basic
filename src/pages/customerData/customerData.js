@@ -33,7 +33,9 @@ function CustomersData() {
                 Role: role
             }
         });
-        window.location.reload(false);
+        setTimeout(() => {
+            window.location.reload(false);
+        }, 500);
     };
 
 

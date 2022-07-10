@@ -70,7 +70,9 @@ function CustomersTable(props) {
                 Role: role
             }
         });
-        window.location.reload(false);
+        setTimeout(() => {
+            window.location.reload(false);
+        }, 500);
     };
 
 
