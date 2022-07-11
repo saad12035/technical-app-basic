@@ -21,7 +21,7 @@ function CustomersData() {
 
     return (
         <div className="container">
-            <Box maxW="960px" mx="auto" >
+            <Box w={[300, 500, 900]}  >
                 <div className="check">
                     <h1 >Technical Task Basic</h1>
                     <CustomersTable{...arr}/>
