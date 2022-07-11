@@ -1,6 +1,7 @@
 import React from 'react';
 import * as Yup from 'yup';
 import {
+    Box,
     Button,
     Modal,
     ModalBody,
@@ -34,7 +35,7 @@ function AddCustomerData() {
             .required('Role is required'),
     })
     return (
-        <div className="add-button">
+        <Box className="add-button" w={[300, 500, 900]}>
             <Button colorScheme='teal' size='lg' onClick={onOpen}>Add Record</Button>
             <Modal isOpen={isOpen} onClose={onClose}>
                 <ModalOverlay/>
@@ -79,7 +80,7 @@ function AddCustomerData() {
                     </Formik>
                 </ModalContent>
             </Modal>
-        </div>
+        </Box>
     );
 }
 

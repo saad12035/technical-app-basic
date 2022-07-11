@@ -7,13 +7,6 @@
     padding-top: 10%;
 }
 
-.check{
-    display: flex;
-    flex-direction: column;
-
-    flex-wrap: wrap;
-}
-
 .check h1{
     font-size: 25px;
     font-weight: bold;

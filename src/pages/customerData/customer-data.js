@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import CustomersTable from "../../components/customer-components/view-customers-data/view-customers-data";
+import CustomersTable from "../../components/customer-components/customers-data-table/customers-data-table";
 import {useQuery} from "@apollo/client";
 import { Box } from "@chakra-ui/react"
 import './customer-data.css';
@@ -21,7 +21,7 @@ function CustomersData() {
 
     return (
         <div className="container">
-            <Box w={[300, 500, 900]}  >
+            <Box w={[300, 500, 900]} >
                 <div className="check">
                     <h1 >Technical Task Basic</h1>
                     <CustomersTable{...arr}/>
