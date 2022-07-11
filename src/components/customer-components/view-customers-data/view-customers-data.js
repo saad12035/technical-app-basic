@@ -23,11 +23,14 @@ import {
     ModalHeader,
     ModalCloseButton,
     ModalBody,
-    FormControl, FormLabel, Input, ModalFooter, useDisclosure
+    ModalFooter, useDisclosure
 } from "@chakra-ui/react";
 import { Spinner } from '@chakra-ui/react'
 import {useMutation} from "@apollo/client";
 import {DELETE_CUSTOMERS,UPDATE_CUSTOMERS} from '../graphql-api-calls';
+import * as Yup from "yup";
+import {Form, Formik} from "formik";
+import {TextField} from "../../textfield/textfield";
 
 
 function CustomersTable(props) {
@@ -40,13 +43,9 @@ function CustomersTable(props) {
     const [placeholderEmail, setPlaceholderEmail] = useState('');
     const [ID, setId] = useState('');
     const [CustomersUpdateMutation] = useMutation(UPDATE_CUSTOMERS);
-    const initialValues = { name: "", email: "", role: "" };
-    const [formValues, setFormValues] = useState(initialValues);
 
-    const handleChange = (e) => {
-        const { name, value } = e.target;
-        setFormValues({ ...formValues, [name]: value });
-    };
+
+
     const handleOpenModal = (id) => {
         setPlaceholderName(id.name);
         setPlaceholderEmail(id.email);
@@ -64,19 +63,6 @@ function CustomersTable(props) {
         })
     }
 
-    const handleSubmit = event => {
-        event.preventDefault();
-        CustomersUpdateMutation({
-            variables: {
-                ID:ID,
-                Email: formValues.email,
-                Name: formValues.name,
-                Role: formValues.role
-            }
-        }).then((res)=>{
-            window.location.reload(false);
-        })
-    };
 
 
     if (Object.keys(props).length !== 0) {
@@ -95,51 +81,64 @@ function CustomersTable(props) {
 
     }
 
+    const validate = Yup.object({
+        name: Yup.string()
+            .matches(/^[A-Za-z ]*$/, 'Please enter valid name')
+            .max(15, 'Must be 15 characters or less')
+            .required('Fullname is Required'),
+        email: Yup.string()
+            .email('Email is invalid')
+            .required('Email is required'),
+        role: Yup.string()
+            .matches(/^[A-Za-z ]*$/, 'Please enter valid role')
+            .max(5,'Role is invalid')
+            .required('Role is required'),
+    })
     if(counsellorSlots.length!==0){
         return(
             <>
                 <Modal isOpen={isOpen} onClose={onClose}>
                     <ModalOverlay/>
                     <ModalContent>
-                        <form onSubmit={handleSubmit}>
-                            <ModalHeader>Edit Customer</ModalHeader>
-                            <ModalCloseButton/>
-                            <ModalBody>
-                                <FormControl isRequired>
-                                    <FormLabel htmlFor='name'>Full Name</FormLabel>
-                                    <Input
-                                        id='name'
-                                        name='name'
-                                        type='text'
-                                        placeholder={placeholderName}
-                                        onChange={handleChange}
-                                    />
-                                </FormControl>
-                                <FormControl isRequired>
-                                    <FormLabel htmlFor='email'>Email address</FormLabel>
-                                    <Input id='email'
-                                           type='email'
-                                           name='email'
-                                           placeholder={placeholderEmail}
-                                           onChange={handleChange}
-                                    />
-                                </FormControl>
-                                <FormControl isRequired>
-                                    <FormLabel htmlFor='role'>Role</FormLabel>
-                                    <Input id='role'
-                                           type='text'
-                                           name='role'
-                                           placeholder={placeholderRole}
-                                           onChange={handleChange}/>
-                                </FormControl>
-                            </ModalBody>
-                            <ModalFooter>
-                                <Button variant='ghost' mr={3} onClick={onClose}>
-                                    Close
-                                </Button>
-                                <Button colorScheme='blue' type="submit">Submit</Button>
-                            </ModalFooter>
-                        </form>
+                        <Formik
+                            initialValues={{
+                                name: '',
+                                email: '',
+                                role: ''
+                            }}
+                            validationSchema={validate}
+                            onSubmit={values => {
+                                CustomersUpdateMutation({
+                                    variables: {
+                                        ID:ID,
+                                        Email:values.email,
+                                        Name: values.name,
+                                        Role: values.role
+                                    }
+                                }).then((res)=>{
+                                    window.location.reload(false);
+                                })
+                                console.log(values)
+                            }}
+                        >
+                            {formik => (
+                                <Form>
+                                    <ModalHeader>Add Customer</ModalHeader>
+                                    <ModalCloseButton/>
+                                    <ModalBody>
+                                        <TextField label="Full Name" name="name" type="text" a={placeholderName} />
+                                        <TextField label="Email" name="email" type="email" a={placeholderEmail}/>
+                                        <TextField label="Role" name="role" type="text" a={placeholderRole}/>
+                                    </ModalBody>
+                                    <ModalFooter>
+                                        <Button variant='ghost' mr={3} onClick={onClose}>
+                                            Close
+                                        </Button>
+                                        <Button colorScheme='blue' type="submit">Submit</Button>
+                                    </ModalFooter>
+                                </Form>
+                            )}
+                        </Formik>
                     </ModalContent>
                 </Modal>
                 <TableContainer>

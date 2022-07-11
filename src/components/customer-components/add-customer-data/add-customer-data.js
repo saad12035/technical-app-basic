@@ -1,7 +1,7 @@
 import React from 'react';
+import * as Yup from 'yup';
 import {
     Button,
-    FormControl, FormLabel, Input,
     Modal,
     ModalBody,
     ModalCloseButton,
@@ -9,61 +9,64 @@ import {
     ModalHeader,
     ModalOverlay, useDisclosure
 } from "@chakra-ui/react";
-import {useState} from "react";
 import {useMutation} from "@apollo/client";
 import {INSERT_CUSTOMERS} from "../graphql-api-calls";
 import './add-customer-data.css';
+import {TextField} from "../../textfield/textfield";
+import {Form, Formik} from "formik";
 
 
 function AddCustomerData() {
     const [MyMutation] = useMutation(INSERT_CUSTOMERS);
     const {isOpen, onOpen, onClose} = useDisclosure();
-    const initialValues = { name: "", email: "", role: "" };
-    const [formValues, setFormValues] = useState(initialValues);
 
-    const handleSubmit = event => {
-        event.preventDefault();
-        MyMutation({
-            variables: {
-                Email: formValues.email,
-                Name: formValues.name,
-                Role: formValues.role
-            }
-        }).then((res)=>{
-            window.location.reload(false);
-        })
-    };
-    const handleChange = (e) => {
-        const { name, value } = e.target;
-        setFormValues({ ...formValues, [name]: value });
-    };
+    const validate = Yup.object({
+        name: Yup.string()
+            .matches(/^[A-Za-z ]*$/, 'Please enter valid name')
+            .max(15, 'Must be 15 characters or less')
+            .required('Fullname is Required'),
+        email: Yup.string()
+            .email('Email is invalid')
+            .required('Email is required'),
+        role: Yup.string()
+            .matches(/^[A-Za-z ]*$/, 'Please enter valid role')
+            .max(5,'Role is invalid')
+            .required('Role is required'),
+    })
     return (
         <div className="add-button">
             <Button colorScheme='teal' size='lg' onClick={onOpen}>Add Record</Button>
             <Modal isOpen={isOpen} onClose={onClose}>
                 <ModalOverlay/>
                 <ModalContent>
-                    <form onSubmit={handleSubmit}>
+                    <Formik
+                        initialValues={{
+                            name: '',
+                            email: '',
+                            role: ''
+                        }}
+                        validationSchema={validate}
+                        onSubmit={values => {
+                            MyMutation({
+                                variables: {
+                                    Email: values.email,
+                                    Name: values.name,
+                                    Role: values.role
+                                }
+                            }).then((res)=>{
+                                window.location.reload(false);
+                            })
+                            console.log(values)
+                        }}
+                    >
+                        {formik => (
+                    <Form>
                         <ModalHeader>Add Customer</ModalHeader>
                         <ModalCloseButton/>
                         <ModalBody>
-                            <FormControl isRequired>
-                                <FormLabel htmlFor='name'>Full Name</FormLabel>
-                                <Input
-                                    id='name'
-                                    name='name'
-                                    type='text'
-                                    onChange={handleChange}
-                                />
-                            </FormControl>
-                            <FormControl isRequired>
-                                <FormLabel htmlFor='email'>Email address</FormLabel>
-                                <Input id='email' type='email'   name='email'  onChange={handleChange}/>
-                            </FormControl>
-                            <FormControl isRequired>
-                                <FormLabel htmlFor='role'>Role</FormLabel>
-                                <Input id='role' type='role'   name='role'  onChange={handleChange}/>
-                            </FormControl>
+                            <TextField label="Full Name" name="name" type="text" />
+                            <TextField label="Email" name="email" type="email" />
+                            <TextField label="Role" name="role" type="text" />
                         </ModalBody>
                         <ModalFooter>
                             <Button variant='ghost' mr={3} onClick={onClose}>
@@ -71,7 +74,9 @@ function AddCustomerData() {
                             </Button>
                             <Button colorScheme='blue' type="submit">Submit</Button>
                         </ModalFooter>
-                    </form>
+                    </Form>
+                        )}
+                    </Formik>
                 </ModalContent>
             </Modal>
         </div>
