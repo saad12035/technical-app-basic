@@ -23,7 +23,7 @@ import {
     ModalHeader,
     ModalCloseButton,
     ModalBody,
-    ModalFooter, useDisclosure
+    ModalFooter, useDisclosure, Box
 } from "@chakra-ui/react";
 import { Spinner } from '@chakra-ui/react'
 import {useMutation} from "@apollo/client";
@@ -204,7 +204,7 @@ function CustomersTable(props) {
     }
     else {
         return(
-            <>
+            <Box  w={[300, 500, 900]}>
                 <h1>Fetching Data ...</h1>
                 <Spinner
                     thickness='4px'
@@ -212,9 +212,9 @@ function CustomersTable(props) {
                     emptyColor='gray.200'
                     color='blue.500'
                     size='xl'
-                    style={{marginLeft:400,marginBottom:20}}
+                    style={{marginLeft:"44%",marginBottom:20}}
                 />
-            </>
+            </Box>
         );
     }
 }
