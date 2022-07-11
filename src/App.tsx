@@ -1,6 +1,6 @@
 import React from 'react';
 import {BrowserRouter, Routes, Route} from "react-router-dom";
-import CustomersData from "./pages/customerData/customerData";
+import CustomersData from "./pages/customerData/customer-data";
 
 
 

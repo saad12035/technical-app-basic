@@ -30,7 +30,6 @@ mutation MyMutation($ID: Int = 10) {
     ID
   }
 }
-
 `;
 
 export const UPDATE_CUSTOMERS = gql`
@@ -42,6 +41,6 @@ mutation MyMutation($ID: Int = 10, $Email: String = "", $Name: String = "", $Rol
     Role
   }
 }
-
 `;
+
 

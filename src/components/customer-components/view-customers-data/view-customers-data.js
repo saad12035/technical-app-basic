@@ -27,7 +27,7 @@ import {
 } from "@chakra-ui/react";
 import { Spinner } from '@chakra-ui/react'
 import {useMutation} from "@apollo/client";
-import {DELETE_CUSTOMERS,UPDATE_CUSTOMERS} from '../../pages/customerData/api';
+import {DELETE_CUSTOMERS,UPDATE_CUSTOMERS} from '../graphql-api-calls';
 
 
 function CustomersTable(props) {
