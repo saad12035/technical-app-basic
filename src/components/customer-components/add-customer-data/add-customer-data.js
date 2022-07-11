@@ -16,26 +16,27 @@ import './add-customer-data.css';
 
 
 function AddCustomerData() {
-    const [email, setEmail] = useState('');
-    const [name, setName] = useState('');
-    const [role, setRole] = useState('');
     const [MyMutation] = useMutation(INSERT_CUSTOMERS);
     const {isOpen, onOpen, onClose} = useDisclosure();
+    const initialValues = { name: "", email: "", role: "" };
+    const [formValues, setFormValues] = useState(initialValues);
 
     const handleSubmit = event => {
         event.preventDefault();
         MyMutation({
             variables: {
-                Email: email,
-                Name: name,
-                Role: role
+                Email: formValues.email,
+                Name: formValues.name,
+                Role: formValues.role
             }
-        });
-        setTimeout(() => {
+        }).then((res)=>{
             window.location.reload(false);
-        }, 500);
+        })
     };
-
+    const handleChange = (e) => {
+        const { name, value } = e.target;
+        setFormValues({ ...formValues, [name]: value });
+    };
     return (
         <div className="add-button">
             <Button colorScheme='teal' size='lg' onClick={onOpen}>Add Record</Button>
@@ -50,17 +51,18 @@ function AddCustomerData() {
                                 <FormLabel htmlFor='name'>Full Name</FormLabel>
                                 <Input
                                     id='name'
-                                    type='name'
-                                    onChange={event => setName(event.currentTarget.value)}
+                                    name='name'
+                                    type='text'
+                                    onChange={handleChange}
                                 />
                             </FormControl>
                             <FormControl isRequired>
                                 <FormLabel htmlFor='email'>Email address</FormLabel>
-                                <Input id='email' type='email' onChange={event => setEmail(event.currentTarget.value)}/>
+                                <Input id='email' type='email'   name='email'  onChange={handleChange}/>
                             </FormControl>
                             <FormControl isRequired>
                                 <FormLabel htmlFor='role'>Role</FormLabel>
-                                <Input id='role' type='role' onChange={event => setRole(event.currentTarget.value)}/>
+                                <Input id='role' type='role'   name='role'  onChange={handleChange}/>
                             </FormControl>
                         </ModalBody>
                         <ModalFooter>

@@ -38,12 +38,15 @@ function CustomersTable(props) {
     const [placeholderName, setPlaceholderName] = useState('');
     const [placeholderRole, setPlaceholderRole] = useState('');
     const [placeholderEmail, setPlaceholderEmail] = useState('');
-    const [email, setEmail] = useState('');
-    const [name, setName] = useState('');
-    const [role, setRole] = useState('');
     const [ID, setId] = useState('');
     const [CustomersUpdateMutation] = useMutation(UPDATE_CUSTOMERS);
+    const initialValues = { name: "", email: "", role: "" };
+    const [formValues, setFormValues] = useState(initialValues);
 
+    const handleChange = (e) => {
+        const { name, value } = e.target;
+        setFormValues({ ...formValues, [name]: value });
+    };
     const handleOpenModal = (id) => {
         setPlaceholderName(id.name);
         setPlaceholderEmail(id.email);
@@ -56,8 +59,9 @@ function CustomersTable(props) {
             variables: {
                 ID:e,
             }
-        });
-        window.location.reload(false);
+        }).then((res)=>{
+            window.location.reload(false);
+        })
     }
 
     const handleSubmit = event => {
@@ -65,14 +69,13 @@ function CustomersTable(props) {
         CustomersUpdateMutation({
             variables: {
                 ID:ID,
-                Email: email,
-                Name: name,
-                Role: role
+                Email: formValues.email,
+                Name: formValues.name,
+                Role: formValues.role
             }
-        });
-        setTimeout(() => {
+        }).then((res)=>{
             window.location.reload(false);
-        }, 500);
+        })
     };
 
 
@@ -102,24 +105,32 @@ function CustomersTable(props) {
                             <ModalHeader>Edit Customer</ModalHeader>
                             <ModalCloseButton/>
                             <ModalBody>
-                                <FormControl>
+                                <FormControl isRequired>
                                     <FormLabel htmlFor='name'>Full Name</FormLabel>
                                     <Input
                                         id='name'
-                                        type='name'
+                                        name='name'
+                                        type='text'
                                         placeholder={placeholderName}
-                                        onChange={event => setName(event.currentTarget.value)}
+                                        onChange={handleChange}
                                     />
                                 </FormControl>
-                                <FormControl>
+                                <FormControl isRequired>
                                     <FormLabel htmlFor='email'>Email address</FormLabel>
-                                    <Input id='email' type='email' placeholder={placeholderEmail}
-                                           onChange={event => setEmail(event.currentTarget.value)}
+                                    <Input id='email'
+                                           type='email'
+                                           name='email'
+                                           placeholder={placeholderEmail}
+                                           onChange={handleChange}
                                     />
                                 </FormControl>
-                                <FormControl>
+                                <FormControl isRequired>
                                     <FormLabel htmlFor='role'>Role</FormLabel>
-                                    <Input id='role' type='role' placeholder={placeholderRole} onChange={event => setRole(event.currentTarget.value)}/>
+                                    <Input id='role'
+                                           type='text'
+                                           name='role'
+                                           placeholder={placeholderRole}
+                                           onChange={handleChange}/>
                                 </FormControl>
                             </ModalBody>
                             <ModalFooter>
