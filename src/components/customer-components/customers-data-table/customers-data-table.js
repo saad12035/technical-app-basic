@@ -30,7 +30,6 @@ import {
 } from "@chakra-ui/react";
 import {useMutation, useQuery} from "@apollo/client";
 import {DELETE_CUSTOMERS, Results, UPDATE_CUSTOMERS} from '../graphql-api-calls';
-import * as Yup from "yup";
 import {Form, Formik} from "formik";
 import {TextField} from "../../textfield/textfield";
 import {validate} from "../../../utilities/formik";
