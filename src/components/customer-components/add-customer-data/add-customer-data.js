@@ -15,6 +15,7 @@ import {INSERT_CUSTOMERS, Results} from "../graphql-api-calls";
 import './add-customer-data.css';
 import {TextField} from "../../textfield/textfield";
 import {Form, Formik} from "formik";
+import {validate} from "../../../utilities/formik";
 
 
 
@@ -26,9 +27,9 @@ function AddCustomerData() {
     function handleSubmit(values){
             MyMutation({
                 variables: {
-                    Email: values.email,
-                    Name: values.name,
-                    Role: values.role
+                    Email: values.email.charAt(0).toUpperCase()+ values.email.slice(1).toLowerCase(),
+                    Name: values.name.charAt(0).toUpperCase()+ values.name.slice(1).toLowerCase(),
+                    Role: values.role.charAt(0).toUpperCase()+ values.role.slice(1).toLowerCase()
                 }
             }).then((res)=>{
                 onClose();
@@ -41,19 +42,7 @@ function AddCustomerData() {
             })
     };
 
-    const validate = Yup.object({
-        name: Yup.string()
-            .matches(/^[A-Za-z ]*$/, 'Please enter valid name')
-            .max(15, 'Must be 15 characters or less')
-            .required('Fullname is Required'),
-        email: Yup.string()
-            .email('Email is invalid')
-            .required('Email is required'),
-        role: Yup.string()
-            .matches(/^[A-Za-z ]*$/, 'Please enter valid role')
-            .max(5,'Role is invalid')
-            .required('Role is required'),
-    })
+
     return (
         <Box className="add-button" w={[300, 500, 900]}>
             <Button colorScheme='teal' size='lg' onClick={onOpen}>Add Record</Button>

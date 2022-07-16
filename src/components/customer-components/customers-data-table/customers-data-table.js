@@ -33,6 +33,7 @@ import {DELETE_CUSTOMERS, Results, UPDATE_CUSTOMERS} from '../graphql-api-calls'
 import * as Yup from "yup";
 import {Form, Formik} from "formik";
 import {TextField} from "../../textfield/textfield";
+import {validate} from "../../../utilities/formik";
 
 function CustomersTable(props) {
     const {isOpen, onOpen, onClose} = useDisclosure();
@@ -63,9 +64,9 @@ function CustomersTable(props) {
 
     const setValues = (name = '', role = '', email = '') => {
         setDataValues({
-            placeholderName: name,
-            placeholderRole: role,
-            placeholderEmail: email
+            placeholderName: name.charAt(0).toUpperCase()+ name.slice(1).toLowerCase(),
+            placeholderRole: role.charAt(0).toUpperCase()+ role.slice(1).toLowerCase(),
+            placeholderEmail: email.charAt(0).toUpperCase()+ email.slice(1).toLowerCase()
         });
     };
 
@@ -98,27 +99,15 @@ function CustomersTable(props) {
             });
     };
 
-    const validate = Yup.object({
-        name: Yup.string()
-            .matches(/^[A-Za-z ]*$/, 'Please enter valid name')
-            .max(15, 'Must be 15 characters or less')
-            .required('Fullname is Required'),
-        email: Yup.string()
-            .email('Email is invalid')
-            .required('Email is required'),
-        role: Yup.string()
-            .matches(/^[A-Za-z ]*$/, 'Please enter valid role')
-            .max(5, 'Role is invalid')
-            .required('Role is required'),
-    })
+
 
     function updateCustomerData(values) {
         CustomersUpdateMutation({
             variables: {
                 ID: ID,
-                Email: values.email,
-                Name: values.name,
-                Role: values.role
+                Email: values.email.charAt(0).toUpperCase()+ values.email.slice(1).toLowerCase(),
+                Name: values.name.charAt(0).toUpperCase()+ values.name.slice(1).toLowerCase(),
+                Role: values.role.charAt(0).toUpperCase()+ values.role.slice(1).toLowerCase()
             }
         }).then((res) => {
             setValues();
