@@ -57,7 +57,10 @@ function CustomersTable(props) {
         } else if (delCustomerError || updateCustomerError || resultError) {
             setLoadingState('error')
         } else {
-            setLoadingState('false');
+            setTimeout(() => {
+                console.log("here",loadingState)
+                setLoadingState('false');
+            }, 2000);
         }
     }, [delCustomerLoading, updateCustomerLoading, resultLoading, delCustomerError, updateCustomerError, resultError]);
 
@@ -128,7 +131,8 @@ function CustomersTable(props) {
                         size='xl'
                         style={{marginLeft: "44%", marginBottom: 20}}
                     />
-                </Box>) : (
+                </Box>
+                   ) : (
                 <>
                     <Modal isOpen={isOpen} onClose={onClose}>
                         <ModalOverlay/>
