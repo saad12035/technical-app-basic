@@ -1,30 +1,16 @@
-import React, {useEffect, useState} from 'react';
+import React from 'react';
 import CustomersTable from "../../components/customer-components/customers-data-table/customers-data-table";
-import {useQuery} from "@apollo/client";
 import { Box } from "@chakra-ui/react"
 import './customer-data.css';
-import {Results} from '../../components/customer-components/graphql-api-calls';
 import AddCustomerData from "../../components/customer-components/add-customer-data/add-customer-data";
 
 function CustomersData() {
-    const {data} = useQuery(Results);
-    const [arr, setArr] = useState([]);
-    useEffect(() => {
-        if (data !== undefined) {
-            let p = []
-            data.Customers.map((arr) => (
-                p.push(arr)
-        ));
-            setArr(p)
-        }
-    }, [data]);
-
     return (
         <div className="container">
             <Box w={[300, 500, 900]} >
                 <div className="check">
                     <h1 >Technical Task Basic</h1>
-                    <CustomersTable{...arr}/>
+                    <CustomersTable/>
                     <AddCustomerData/>
                 </div>
             </Box>

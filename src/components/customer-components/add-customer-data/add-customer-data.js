@@ -10,16 +10,36 @@ import {
     ModalHeader,
     ModalOverlay, useDisclosure
 } from "@chakra-ui/react";
-import {useMutation} from "@apollo/client";
-import {INSERT_CUSTOMERS} from "../graphql-api-calls";
+import {useMutation, useQuery} from "@apollo/client";
+import {INSERT_CUSTOMERS, Results} from "../graphql-api-calls";
 import './add-customer-data.css';
 import {TextField} from "../../textfield/textfield";
 import {Form, Formik} from "formik";
 
 
+
 function AddCustomerData() {
     const [MyMutation] = useMutation(INSERT_CUSTOMERS);
     const {isOpen, onOpen, onClose} = useDisclosure();
+    const {refetch} = useQuery(Results);
+
+    function handleSubmit(values){
+            MyMutation({
+                variables: {
+                    Email: values.email,
+                    Name: values.name,
+                    Role: values.role
+                }
+            }).then((res)=>{
+                onClose();
+                refetchCustomersData();
+            })
+    }
+    const refetchCustomersData = () => {
+        refetch()
+            .then((res) => {
+            })
+    };
 
     const validate = Yup.object({
         name: Yup.string()
@@ -47,18 +67,7 @@ function AddCustomerData() {
                             role: ''
                         }}
                         validationSchema={validate}
-                        onSubmit={values => {
-                            MyMutation({
-                                variables: {
-                                    Email: values.email,
-                                    Name: values.name,
-                                    Role: values.role
-                                }
-                            }).then((res)=>{
-                                window.location.reload(false);
-                            })
-                            console.log(values)
-                        }}
+                        onSubmit={handleSubmit}
                     >
                         {formik => (
                     <Form>
