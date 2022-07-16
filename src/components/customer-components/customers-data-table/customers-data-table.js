@@ -58,9 +58,8 @@ function CustomersTable(props) {
             setLoadingState('error')
         } else {
             setTimeout(() => {
-                console.log("here",loadingState)
                 setLoadingState('false');
-            }, 2000);
+            }, 1000);
         }
     }, [delCustomerLoading, updateCustomerLoading, resultLoading, delCustomerError, updateCustomerError, resultError]);
 
