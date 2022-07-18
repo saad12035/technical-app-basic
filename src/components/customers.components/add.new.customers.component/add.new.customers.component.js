@@ -10,21 +10,21 @@ import {
     ModalOverlay, useDisclosure
 } from "@chakra-ui/react";
 import {useMutation, useQuery} from "@apollo/client";
-import {INSERT_CUSTOMERS, Results} from "../graphql-api-calls";
-import './add-customer-data.css';
-import {TextField} from "../../textfield/textfield";
+import {INSERT_CUSTOMERS, Results} from "../graphql.api.calls";
+import './add.new.customers.component.css';
+import {TextfieldComponent} from "../../textfield.components/textfield.component";
 import {Form, Formik} from "formik";
-import {validate} from "../../../utilities/formik";
+import {validate} from "../../../utilities/formik.conditions";
 
 
 
-function AddCustomerData() {
-    const [MyMutation] = useMutation(INSERT_CUSTOMERS);
+function AddNewCustomersComponent() {
+    const [Mutation] = useMutation(INSERT_CUSTOMERS);
     const {isOpen, onOpen, onClose} = useDisclosure();
     const {refetch} = useQuery(Results);
 
     function handleSubmit(values){
-            MyMutation({
+            Mutation({
                 variables: {
                     Email: values.email.charAt(0).toUpperCase()+ values.email.slice(1).toLowerCase(),
                     Name: values.name.charAt(0).toUpperCase()+ values.name.slice(1).toLowerCase(),
@@ -62,9 +62,9 @@ function AddCustomerData() {
                         <ModalHeader>Add Customer</ModalHeader>
                         <ModalCloseButton/>
                         <ModalBody>
-                            <TextField label="Full Name" name="name" type="text" />
-                            <TextField label="Email" name="email" type="email" />
-                            <TextField label="Role" name="role" type="text" />
+                            <TextfieldComponent label="Full Name" name="name" type="text" />
+                            <TextfieldComponent label="Email" name="email" type="email" />
+                            <TextfieldComponent label="Role" name="role" type="text" />
                         </ModalBody>
                         <ModalFooter>
                             <Button variant='ghost' mr={3} onClick={onClose}>
@@ -81,4 +81,4 @@ function AddCustomerData() {
     );
 }
 
-export default AddCustomerData;
+export default AddNewCustomersComponent;

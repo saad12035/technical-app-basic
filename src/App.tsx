@@ -1,6 +1,6 @@
 import React from 'react';
 import {BrowserRouter, Routes, Route} from "react-router-dom";
-import CustomersData from "./pages/customerData/customer-data";
+import CustomersInformation from "./pages/customersInformation/customers.information";
 
 
 
@@ -8,7 +8,7 @@ function App() {
     return (
         <BrowserRouter>
             <Routes>
-                <Route path="/" element={<CustomersData/>}>
+                <Route path="/" element={<CustomersInformation/>}>
                 </Route>
             </Routes>
         </BrowserRouter>

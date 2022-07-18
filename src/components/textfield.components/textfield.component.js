@@ -1,8 +1,8 @@
 import React from 'react';
 import { ErrorMessage, useField } from 'formik';
-import './textfield.css';
+import './textfield.component.css';
 
-export const TextField = ({ label, ...props }) => {
+export const TextfieldComponent = ({ label, ...props }) => {
     const [field, meta] = useField(props);
     return (
         <div className="fields mb-2" >

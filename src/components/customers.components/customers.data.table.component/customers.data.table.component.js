@@ -29,17 +29,17 @@ import {
     useDisclosure
 } from "@chakra-ui/react";
 import {useMutation, useQuery} from "@apollo/client";
-import {DELETE_CUSTOMERS, Results, UPDATE_CUSTOMERS} from '../graphql-api-calls';
+import {DELETE_CUSTOMERS, Results, UPDATE_CUSTOMERS} from '../graphql.api.calls';
 import {Form, Formik} from "formik";
-import {TextField} from "../../textfield/textfield";
-import {validate} from "../../../utilities/formik";
+import {TextfieldComponent} from "../../textfield.components/textfield.component";
+import {validate} from "../../../utilities/formik.conditions";
 
-function CustomersTable(props) {
+function CustomersTable() {
     const {isOpen, onOpen, onClose} = useDisclosure();
     const [dataValues, setDataValues] = useState({
-        placeholderName: '',
-        placeholderRole: '',
-        placeholderEmail: ''
+        acquiredName: '',
+        acquiredRole: '',
+        acquiredEmail: ''
     });
     const [ID, setId] = useState('');
 
@@ -65,9 +65,9 @@ function CustomersTable(props) {
 
     const setValues = (name = '', role = '', email = '') => {
         setDataValues({
-            placeholderName: name.charAt(0).toUpperCase()+ name.slice(1).toLowerCase(),
-            placeholderRole: role.charAt(0).toUpperCase()+ role.slice(1).toLowerCase(),
-            placeholderEmail: email.charAt(0).toUpperCase()+ email.slice(1).toLowerCase()
+            acquiredName: name.charAt(0).toUpperCase()+ name.slice(1).toLowerCase(),
+            acquiredRole: role.charAt(0).toUpperCase()+ role.slice(1).toLowerCase(),
+            acquiredEmail: email.charAt(0).toUpperCase()+ email.slice(1).toLowerCase()
         });
     };
 
@@ -77,10 +77,10 @@ function CustomersTable(props) {
         onOpen();
     };
 
-    function handleDelete(e) {
+    function handleDelete(event) {
         MyMutation({
             variables: {
-                ID: e,
+                ID: event,
             }
         })
             .then(() => {
@@ -138,9 +138,9 @@ function CustomersTable(props) {
                         <ModalContent>
                             <Formik
                                 initialValues={{
-                                    name: dataValues.placeholderName,
-                                    email: dataValues.placeholderEmail,
-                                    role: dataValues.placeholderRole
+                                    name: dataValues.acquiredName,
+                                    email: dataValues.acquiredEmail,
+                                    role: dataValues.acquiredRole
                                 }}
                                 validationSchema={validate}
                                 onSubmit={updateCustomerData}
@@ -150,9 +150,9 @@ function CustomersTable(props) {
                                         <ModalHeader>Add Customer</ModalHeader>
                                         <ModalCloseButton/>
                                         <ModalBody>
-                                            <TextField label="Full Name" name="name" type="text"/>
-                                            <TextField label="Email" name="email" type="email"/>
-                                            <TextField label="Role" name="role" type="text"/>
+                                            <TextfieldComponent label="Full Name" name="name" type="text"/>
+                                            <TextfieldComponent label="Email" name="email" type="email"/>
+                                            <TextfieldComponent label="Role" name="role" type="text"/>
                                         </ModalBody>
                                         <ModalFooter>
                                             <Button variant='ghost' mr={3} onClick={onClose}>
@@ -179,19 +179,19 @@ function CustomersTable(props) {
                             </Thead>
                             <Tbody>
                                 {
-                                    data?.Customers?.map((a) => {
+                                    data?.Customers?.map((element) => {
                                         return (
-                                            <Tr key={a.ID}>
-                                                <Td textAlign="center">{a.ID}</Td>
-                                                <Td textAlign="center">{a.Name}</Td>
-                                                <Td textAlign="center">{a.Email}</Td>
-                                                <Td textAlign="center">{a.Role}</Td>
+                                            <Tr key={element.ID}>
+                                                <Td textAlign="center">{element.ID}</Td>
+                                                <Td textAlign="center">{element.Name}</Td>
+                                                <Td textAlign="center">{element.Email}</Td>
+                                                <Td textAlign="center">{element.Role}</Td>
                                                 <Td textAlign="center">{
                                                     <>
                                                         <Button
                                                             colorScheme='blue'
                                                             variant='outline'
-                                                            onClick={() => handleOpenModal(a)}
+                                                            onClick={() => handleOpenModal(element)}
                                                         >Edit
                                                         </Button>
                                                     </>
@@ -211,7 +211,7 @@ function CustomersTable(props) {
                                                             <PopoverFooter display='flex' justifyContent='center'>
                                                                 <ButtonGroup size='sm'>
                                                                     <Button colorScheme='red'
-                                                                            onClick={() => handleDelete(a.ID)}>Confirm
+                                                                            onClick={() => handleDelete(element.ID)}>Confirm
                                                                         Delete</Button>
                                                                 </ButtonGroup>
                                                             </PopoverFooter>
